@@ -1,0 +1,14 @@
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.exe
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.deps.json
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.runtimeconfig.json
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.runtimeconfig.dev.json
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.dll
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\bin\PacketGenerator.pdb
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.csproj.AssemblyReference.cache
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.AssemblyInfoInputs.cache
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.AssemblyInfo.cs
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.csproj.CoreCompileInputs.cache
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.dll
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.pdb
+C:\Users\helle\Desktop\공부\1_Server_Session\ServerCore\PacketGenerator\obj\Debug\PacketGenerator.genruntimeconfig.cache
