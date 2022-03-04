@@ -1,0 +1,10 @@
+﻿ServerCore/Server/obj/Debug/netcoreapp3.1
+ServerCore/.vs
+ServerCore/DummyClient/obj/Debug/netcoreapp3.1
+ServerCore/DummyClient/obj
+ServerCore/PacketGenerator/obj/Debug
+ServerCore/PacketGenerator/obj
+ServerCore/Server/obj/Debug/netcoreapp3.1
+ServerCore/Server/obj
+ServerCore/ServerCore/obj/Debug/netcoreapp3.1
+ServerCore/ServerCore/obj
