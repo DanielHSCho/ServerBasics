@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 
-// <패킷 제네레이터 5#> 22.03.04
+// <패킷 제네레이터 6#> 22.03.04 - 클라 / 서버 패킷 레지스터 분리
 namespace PacketGenerator
 {
     class Program
@@ -11,8 +11,8 @@ namespace PacketGenerator
         static ushort packetId;
         static string packetEnums;
 
-        // 1.
-        static string managerRegister;
+        static string clientRegister;
+        static string serverRegister;
 
         static void Main(string[] args)
         {
@@ -39,9 +39,11 @@ namespace PacketGenerator
                 string fileText = string.Format(PacketFormat.fileFormat, packetEnums, genPackets);
                 File.WriteAllText("GenPackets.cs", fileText);
 
-                // 2.
-                string managerText = string.Format(PacketFormat.managerFormat, managerRegister);
-                File.WriteAllText("PacketManager.cs", managerText);
+                string clientManagerText = string.Format(PacketFormat.managerFormat, clientRegister);
+                File.WriteAllText("ClientPacketManager.cs", clientManagerText);
+
+                string serverManagerText = string.Format(PacketFormat.managerFormat, serverRegister);
+                File.WriteAllText("ServerPacketManager.cs", serverManagerText);
             }
         }
 
@@ -65,8 +67,13 @@ namespace PacketGenerator
             Tuple<string, string, string> tuple = ParseMembers(r);
             genPackets += string.Format(PacketFormat.packetFormat, packetName, tuple.Item1, tuple.Item2, tuple.Item3);
             packetEnums += string.Format(PacketFormat.packetEnumFormat, packetName, ++packetId) + Environment.NewLine + "\t";
-            // 3.
-            managerRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine;
+            
+            if(packetName.StartsWith("S_") || packetName.StartsWith("S_")) {
+                clientRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine;
+            } else {
+                serverRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine;
+            }
+
         }
 
         // {1} 멤버 변수 이름
