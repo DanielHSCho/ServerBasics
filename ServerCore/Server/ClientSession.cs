@@ -5,11 +5,11 @@ using System.Net;
 using System.Threading;
 using ServerCore;
 
-// <패킷 제네레이터> 22.02.28 - Packet 제네레이터로 생성한 패킷 테스트 
+// <패킷 제네레이터 5#> 22.03.01 - 패킷 Switch문 자동화
+// - 내 패킷이 만약에 100번째라면 불필요한 99번의 switch문을 돌아야하므로 자동화
 namespace Server
 {
-	
-	class ClientSession : PacketSession
+    class ClientSession : PacketSession
     {
         public override void OnConnected(EndPoint endPoint)
         {
@@ -34,7 +34,6 @@ namespace Server
                         req.Read(buffer);
                         Console.WriteLine($"PlayerInfoReq:{req.playerId} {req.name}");
 
-                        // 1. List 빼는 부분 추가
                         foreach (PlayerInfoReq.Skill skill in req.skills) {
                             Console.WriteLine($"Skill({skill.id}:{skill.level}:{skill.duration})");
                         }
@@ -56,6 +55,60 @@ namespace Server
         }
     }
 }
+
+
+
+
+//// <패킷 제네레이터> 22.02.28 - Packet 제네레이터로 생성한 패킷 테스트 
+//namespace Server
+//{
+//	class ClientSession : PacketSession
+//    {
+//        public override void OnConnected(EndPoint endPoint)
+//        {
+//            Console.WriteLine($"On Connected : {endPoint}");
+//            //Send(sendBuff);
+//            Thread.Sleep(5000);
+//            Disconnect();
+//        }
+
+//        public override void OnRecvPacket(ArraySegment<byte> buffer)
+//        {
+//            ushort count = 0;
+
+//            ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+//            count += 2;
+//            ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
+//            count += 2;
+
+//            switch ((PacketID)id) {
+//                case PacketID.PlayerInfoReq: {
+//                        PlayerInfoReq req = new PlayerInfoReq();
+//                        req.Read(buffer);
+//                        Console.WriteLine($"PlayerInfoReq:{req.playerId} {req.name}");
+
+//                        // 1. List 빼는 부분 추가
+//                        foreach (PlayerInfoReq.Skill skill in req.skills) {
+//                            Console.WriteLine($"Skill({skill.id}:{skill.level}:{skill.duration})");
+//                        }
+//                    }
+//                    break;
+//            }
+
+//            Console.WriteLine($"PlayerPacketId:{id}, Size:{size}");
+//        }
+
+//        public override void OnDisconnected(EndPoint endPoint)
+//        {
+//            Console.WriteLine($"On Disconnected : {endPoint}");
+//        }
+
+//        public override void OnSend(int numOfBytes)
+//        {
+//            Console.WriteLine($"Transferred Bytes : {numOfBytes}");
+//        }
+//    }
+//}
 
 
 
