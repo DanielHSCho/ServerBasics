@@ -2,15 +2,7 @@
 using System.IO;
 using System.Xml;
 
-// <패킷 제네레이터 4#> 22.03.01 - 배치파일 만들어서 PDL 수정 시 양쪽의 GenPacket이 자동으로 고쳐주는 작업
-// < 1. 배치파일 추가하기>
-// - 프로젝트 경로에 커먼 / 패킷 폴더 추가
-// - 해당 패킷 폴더에 배치 파일 추가 -> 새 text파일 추가 후 확장자 명 bat으로 변경
-// - 배치 파일이란 -> 윈도우에서 명령어를 사용해 한번에 어떤 처리를 할 수 있는 것
-// - 배치 파일의 exe 다음의 인자는 Program의 Main 함수의 arg로 들어가게 됨 !!
-// <2. 배치파일에 XCOPY 추가>
-// - 파일을 이동 시킬 수 있음, 이동 시 /Y 옵션으로 덮어쓰기 가능
-
+// <패킷 제네레이터 5#> 22.03.04 - 패킷 매니저 자동화
 namespace PacketGenerator
 {
     class Program
@@ -18,6 +10,9 @@ namespace PacketGenerator
         static string genPackets;
         static ushort packetId;
         static string packetEnums;
+
+        // 1.
+        static string managerRegister;
 
         static void Main(string[] args)
         {
@@ -43,6 +38,10 @@ namespace PacketGenerator
 
                 string fileText = string.Format(PacketFormat.fileFormat, packetEnums, genPackets);
                 File.WriteAllText("GenPackets.cs", fileText);
+
+                // 2.
+                string managerText = string.Format(PacketFormat.managerFormat, managerRegister);
+                File.WriteAllText("PacketManager.cs", managerText);
             }
         }
 
@@ -66,6 +65,8 @@ namespace PacketGenerator
             Tuple<string, string, string> tuple = ParseMembers(r);
             genPackets += string.Format(PacketFormat.packetFormat, packetName, tuple.Item1, tuple.Item2, tuple.Item3);
             packetEnums += string.Format(PacketFormat.packetEnumFormat, packetName, ++packetId) + Environment.NewLine + "\t";
+            // 3.
+            managerRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine;
         }
 
         // {1} 멤버 변수 이름
@@ -213,6 +214,224 @@ namespace PacketGenerator
         }
     }
 }
+
+
+
+//// <패킷 제네레이터 4#> 22.03.01 - 배치파일 만들어서 PDL 수정 시 양쪽의 GenPacket이 자동으로 고쳐주는 작업
+//// < 1. 배치파일 추가하기>
+//// - 프로젝트 경로에 커먼 / 패킷 폴더 추가
+//// - 해당 패킷 폴더에 배치 파일 추가 -> 새 text파일 추가 후 확장자 명 bat으로 변경
+//// - 배치 파일이란 -> 윈도우에서 명령어를 사용해 한번에 어떤 처리를 할 수 있는 것
+//// - 배치 파일의 exe 다음의 인자는 Program의 Main 함수의 arg로 들어가게 됨 !!
+//// <2. 배치파일에 XCOPY 추가>
+//// - 파일을 이동 시킬 수 있음, 이동 시 /Y 옵션으로 덮어쓰기 가능
+
+//namespace PacketGenerator
+//{
+//    class Program
+//    {
+//        static string genPackets;
+//        static ushort packetId;
+//        static string packetEnums;
+
+//        static string managerRegister;
+
+//        static void Main(string[] args)
+//        {
+//            string pdlPath = "../PDL.xml";
+
+//            XmlReaderSettings settings = new XmlReaderSettings() {
+//                IgnoreComments = true,
+//                IgnoreWhitespace = true
+//            };
+
+//            if (args.Length >= 1) {
+//                pdlPath = args[0];
+//            }
+
+//            using (XmlReader reader = XmlReader.Create(pdlPath, settings)) {
+//                reader.MoveToContent();
+
+//                while (reader.Read()) {
+//                    if (reader.Depth == 1 && reader.NodeType == XmlNodeType.Element) {
+//                        ParsePacket(reader);
+//                    }
+//                }
+
+//                string fileText = string.Format(PacketFormat.fileFormat, packetEnums, genPackets);
+//                File.WriteAllText("GenPackets.cs", fileText);
+//                string managerText = string.Format(PacketFormat.managerFormat, managerRegister);
+//                File.WriteAllText("PacketManager.cs", managerText);
+//            }
+//        }
+
+//        public static void ParsePacket(XmlReader r)
+//        {
+//            if (r.NodeType == XmlNodeType.EndElement) {
+//                return;
+//            }
+
+//            if (r.Name.ToLower() != "packet") {
+//                Console.WriteLine("Invalid packet node");
+//                return;
+//            }
+
+//            string packetName = r["name"];
+//            if (string.IsNullOrEmpty(packetName)) {
+//                Console.WriteLine("Packet Without Name");
+//                return;
+//            }
+
+//            Tuple<string, string, string> tuple = ParseMembers(r);
+//            genPackets += string.Format(PacketFormat.packetFormat, packetName, tuple.Item1, tuple.Item2, tuple.Item3);
+//            packetEnums += string.Format(PacketFormat.packetEnumFormat, packetName, ++packetId) + Environment.NewLine + "\t";
+//        }
+
+//        // {1} 멤버 변수 이름
+//        // {2} 멤버 변수 Read
+//        // {3} 멤버 변수 Write
+//        public static Tuple<string, string, string> ParseMembers(XmlReader r)
+//        {
+//            string packetName = r["name"];
+
+//            string memberCode = "";
+//            string readCode = "";
+//            string writeCode = "";
+
+//            int memberDepth = r.Depth + 1;
+//            while (r.Read()) {
+//                if (r.Depth != memberDepth) {
+//                    break;
+//                }
+
+//                string memberName = r["name"];
+//                if (string.IsNullOrEmpty(memberName)) {
+//                    Console.WriteLine("Member without name");
+//                    return null;
+//                }
+
+//                if (string.IsNullOrEmpty(memberCode) == false) {
+//                    memberCode += Environment.NewLine;
+//                }
+//                if (string.IsNullOrEmpty(readCode) == false) {
+//                    readCode += Environment.NewLine;
+//                }
+//                if (string.IsNullOrEmpty(writeCode) == false) {
+//                    writeCode += Environment.NewLine;
+//                }
+
+//                string memberType = r.Name.ToLower();
+//                switch (memberType) {
+//                    case "byte":
+//                    case "sbyte":
+//                        memberCode += string.Format(PacketFormat.memberFormat, memberType, memberName);
+//                        readCode += string.Format(PacketFormat.readByteFormat, memberName, memberType);
+//                        writeCode += string.Format(PacketFormat.writeFormat, memberName, memberType);
+//                        break;
+//                    case "bool":
+//                    case "short":
+//                    case "ushort":
+//                    case "int":
+//                    case "long":
+//                    case "float":
+//                    case "double":
+//                        memberCode += string.Format(PacketFormat.memberFormat, memberType, memberName);
+//                        readCode += string.Format(PacketFormat.readFormat, memberName, ToMemberType(memberType), memberType);
+//                        writeCode += string.Format(PacketFormat.writeFormat, memberName, memberType);
+//                        break;
+//                    case "string":
+//                        memberCode += string.Format(PacketFormat.memberFormat, memberType, memberName);
+//                        readCode += string.Format(PacketFormat.readStringFormat, memberName);
+//                        writeCode += string.Format(PacketFormat.writeStringFormat, memberName);
+//                        break;
+//                    case "list":
+//                        Tuple<string, string, string> tuple = ParseList(r);
+//                        memberCode += tuple.Item1;
+//                        readCode += tuple.Item2;
+//                        writeCode += tuple.Item3;
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+
+//            memberCode = memberCode.Replace("\n", "\n\t");
+//            readCode = readCode.Replace("\n", "\n\t\t");
+//            writeCode = writeCode.Replace("\n", "\n\t\t");
+
+//            return new Tuple<string, string, string>(memberCode, readCode, writeCode);
+//        }
+
+//        public static Tuple<string, string, string> ParseList(XmlReader r)
+//        {
+//            string listName = r["name"];
+//            if (string.IsNullOrEmpty(listName)) {
+//                Console.WriteLine("List without name");
+//                return null;
+//            }
+
+//            Tuple<string, string, string> tuple = ParseMembers(r);
+
+//            string memberCode = string.Format(PacketFormat.memberListFormat,
+//                FirstCharToUpper(listName),
+//                FirstCharToLower(listName),
+//                tuple.Item1,
+//                tuple.Item2,
+//                tuple.Item3);
+
+//            string readCode = string.Format(PacketFormat.readListFormat,
+//                FirstCharToUpper(listName),
+//                FirstCharToLower(listName));
+
+//            string writeCode = string.Format(PacketFormat.writeListFormat,
+//                            FirstCharToUpper(listName),
+//                            FirstCharToLower(listName));
+
+//            return new Tuple<string, string, string>(memberCode, readCode, writeCode);
+//        }
+
+//        public static string ToMemberType(string memberType)
+//        {
+//            switch (memberType) {
+//                case "bool":
+//                    return "ToBoolean";
+//                // case "byte": // 따로 정의되어있지는 않음
+//                case "short":
+//                    return "ToInt16";
+//                case "ushort":
+//                    return "ToUInt16";
+//                case "int":
+//                    return "ToInt32";
+//                case "long":
+//                    return "ToInt64";
+//                case "float":
+//                    return "ToSingle";
+//                case "double":
+//                    return "ToDouble";
+//                default:
+//                    return string.Empty;
+//            }
+//        }
+
+//        public static string FirstCharToUpper(string input)
+//        {
+//            if (string.IsNullOrEmpty(input)) {
+//                return string.Empty;
+//            }
+
+//            return input[0].ToString().ToUpper() + input.Substring(1);
+//        }
+
+//        public static string FirstCharToLower(string input)
+//        {
+//            if (string.IsNullOrEmpty(input)) {
+//                return string.Empty;
+//            }
+
+//            return input[0].ToString().ToLower() + input.Substring(1);
+//        }
+//    }
+//}
 
 
 
