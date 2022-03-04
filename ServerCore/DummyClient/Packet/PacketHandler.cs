@@ -1,10 +1,17 @@
-﻿using System;
+﻿using ServerCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DummyClient.Packet
+class PacketHandler
 {
-    class PacketHandler
+    public static void PlayerInfoReqHandler(PacketSession session, IPacket packet)
     {
+        
+    }
+
+    public static void TestHandler(PacketSession session, IPacket packet)
+    {
+
     }
 }
