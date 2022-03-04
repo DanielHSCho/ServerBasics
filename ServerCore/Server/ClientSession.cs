@@ -21,27 +21,7 @@ namespace Server
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
         {
-            ushort count = 0;
-
-            ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
-            count += 2;
-            ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
-            count += 2;
-
-            switch ((PacketID)id) {
-                case PacketID.PlayerInfoReq: {
-                        PlayerInfoReq req = new PlayerInfoReq();
-                        req.Read(buffer);
-                        Console.WriteLine($"PlayerInfoReq:{req.playerId} {req.name}");
-
-                        foreach (PlayerInfoReq.Skill skill in req.skills) {
-                            Console.WriteLine($"Skill({skill.id}:{skill.level}:{skill.duration})");
-                        }
-                    }
-                    break;
-            }
-
-            Console.WriteLine($"PlayerPacketId:{id}, Size:{size}");
+            PacketManager.Instance.OnRecvPacket(this, buffer);
         }
 
         public override void OnDisconnected(EndPoint endPoint)
