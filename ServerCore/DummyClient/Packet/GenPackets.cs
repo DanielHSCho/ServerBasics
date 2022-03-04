@@ -4,7 +4,6 @@ using System.Text;
 using System.Net;
 using ServerCore;
 
-// <패킷 제네레이터 5#> 22.03.04 - Switch문 개선을 위해 공용처리용 Interface 추가
 public enum PacketID
 {
     PlayerInfoReq = 1,
@@ -12,7 +11,6 @@ public enum PacketID
 	
 }
 
-// 1. 인터페이스 추가
 interface IPacket
 {
 	ushort Protocol { get; }
@@ -20,7 +18,7 @@ interface IPacket
 	ArraySegment<byte> Write();
 }
 
-// 2. 상속
+
 class PlayerInfoReq : IPacket
 {
     public byte testByte;
@@ -96,7 +94,9 @@ class PlayerInfoReq : IPacket
 	}
 	
 	public List<Skill> skills = new List<Skill>();
-	public ushort Protocol { get { return (ushort)PacketID.PlayerInfoReq; } }
+	
+
+    public ushort Protocol { get { return (ushort)PacketID.PlayerInfoReq; } }
 
     public void Read(ArraySegment<byte> segment)
     {
@@ -166,9 +166,11 @@ class PlayerInfoReq : IPacket
     }
 }
 
-class Test
+class Test : IPacket
 {
     public int testInt;
+
+    public ushort Protocol { get { return (ushort)PacketID.Test; } }
 
     public void Read(ArraySegment<byte> segment)
     {
