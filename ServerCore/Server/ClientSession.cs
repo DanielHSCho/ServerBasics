@@ -36,9 +36,6 @@ namespace Server
     }
 }
 
-
-
-
 //// <패킷 제네레이터> 22.02.28 - Packet 제네레이터로 생성한 패킷 테스트 
 //namespace Server
 //{
