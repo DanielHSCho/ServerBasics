@@ -5,7 +5,7 @@ using System.Text;
 
 class PacketHandler
 {
-    public static void C_PlayerInfoReqHandler(PacketSession session, IPacket packet)
+    public static void C_ChatHandler(PacketSession session, IPacket packet)
     {
         C_PlayerInfoReq req = packet as C_PlayerInfoReq;
         Console.WriteLine($"PlayerInfoReq:{req.playerId} {req.name}");
