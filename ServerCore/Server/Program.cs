@@ -8,6 +8,8 @@ namespace Server
     class Program
     {
         static Listener _listner = new Listener();
+        // TODO : 이 ROOM도 나중에 매니저가 있어서 조종해야함
+        public static GameRoom Room = new GameRoom();
 
         static void Main(string[] args)
         {
@@ -19,7 +21,7 @@ namespace Server
             IPAddress ipAddr = ipHost.AddressList[0];
             IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
-            // TODO : 나중에 매니저를 통해 세션을 만들도록 개선해야 함
+            // TODO : 나중에 매니저를 통해 세션을 발급해주도록 개선해야함
             _listner.Init(endPoint, () => { return new ClientSession(); });
             Console.WriteLine("Listening");
 

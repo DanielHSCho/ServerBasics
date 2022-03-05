@@ -5,18 +5,26 @@ using System.Net;
 using System.Threading;
 using ServerCore;
 
-// <패킷 제네레이터 5#> 22.03.01 - 패킷 Switch문 자동화
-// - 내 패킷이 만약에 100번째라면 불필요한 99번의 switch문을 돌아야하므로 자동화
 namespace Server
 {
     class ClientSession : PacketSession
     {
+        //1. 이 세션이 어떤 방에 있는지, 이 세션의 ID는 무엇인지 알기 위해 추가
+        public int SessionId { get; set; }
+        public GameRoom Room { get; set; }
+
         public override void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"On Connected : {endPoint}");
-            //Send(sendBuff);
-            Thread.Sleep(5000);
-            Disconnect();
+
+            // TODO : 채팅 테스트를 위해 임시로 어떤 채팅방에 강제 입장
+            // TODO : 실제 게임 개발 시에는 입장 후 이 단계에서 클라가 리소스 로딩 다 했다고 신호 보내면 그때 입장 처리해야함
+
+
+            
+            // 끊어주는건 임시 주석
+            // Thread.Sleep(5000);
+            // Disconnect();
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
