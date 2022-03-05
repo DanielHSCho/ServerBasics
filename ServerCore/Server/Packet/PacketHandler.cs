@@ -1,4 +1,5 @@
-﻿using ServerCore;
+﻿using Server;
+using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,12 +8,16 @@ class PacketHandler
 {
     public static void C_ChatHandler(PacketSession session, IPacket packet)
     {
-        C_PlayerInfoReq req = packet as C_PlayerInfoReq;
-        Console.WriteLine($"PlayerInfoReq:{req.playerId} {req.name}");
-
-        foreach (C_PlayerInfoReq.Skill skill in req.skills) {
-            Console.WriteLine($"Skill({skill.id}:{skill.level}:{skill.duration})");
+        C_Chat chatPacket = packet as C_Chat;
+        ClientSession clientSession = session as ClientSession;
+        
+        // 방에 있는 상태가 아님
+        if(clientSession.Room == null) {
+            return;
         }
+
+        // 방에 있다면 브로드캐스트
+        clientSession.Room.BroadCast(clientSession, chatPacket.chat);
     }
 }
 
