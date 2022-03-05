@@ -31,6 +31,7 @@ namespace Server
 
         public override void OnDisconnected(EndPoint endPoint)
         {
+            SessionManager.Instance.Remove(this);
             Console.WriteLine($"On Disconnected : {endPoint}");
         }
 

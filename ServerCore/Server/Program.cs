@@ -22,7 +22,7 @@ namespace Server
             IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
             // TODO : 나중에 매니저를 통해 세션을 발급해주도록 개선해야함
-            _listner.Init(endPoint, () => { return new ClientSession(); });
+            _listner.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
             Console.WriteLine("Listening");
 
             // 프로그램이 종료되지 않게
