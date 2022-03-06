@@ -14,13 +14,13 @@ namespace ServerCore
         {
             for(int i = 0; i < count; i++) {
                 Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                _sessionFactory += sessionFactory;
+                _sessionFactory = sessionFactory;
 
                 SocketAsyncEventArgs args = new SocketAsyncEventArgs();
                 args.Completed += OnConnectedCompleted;
                 args.RemoteEndPoint = endPoint;
-
                 args.UserToken = socket;
+
                 RegisterConnect(args);
             }
         }

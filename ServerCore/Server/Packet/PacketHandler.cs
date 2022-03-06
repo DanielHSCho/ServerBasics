@@ -17,7 +17,7 @@ class PacketHandler
         }
 
         // 방에 있다면 브로드캐스트
-        clientSession.Room.BroadCast(clientSession, chatPacket.chat);
+        clientSession.Room.Broadcast(clientSession, chatPacket.chat);
     }
 }
 
