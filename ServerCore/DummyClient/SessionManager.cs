@@ -6,16 +6,16 @@ namespace DummyClient
 {
     class SessionManager
     {
-        static SessionManager _session = new SessionManager();
+        private static SessionManager _session = new SessionManager();
         public static SessionManager Instance { get { return _session; } }
 
-        List<ServerSession> _sessions = new List<ServerSession>();
-        object _lock = new object();
+        private List<ServerSession> _sessionList = new List<ServerSession>();
+        private object _lock = new object();
 
         public void SendForEach()
         {
             lock (_lock) {
-                foreach(ServerSession session in _sessions) {
+                foreach(ServerSession session in _sessionList) {
                     C_Chat chatPacket = new C_Chat();
                     chatPacket.chat = $"Hellow Server!";
                     ArraySegment<byte> segment = chatPacket.Write();
@@ -29,7 +29,7 @@ namespace DummyClient
         {
             lock (_lock) {
                 ServerSession session = new ServerSession();
-                _sessions.Add(session);
+                _sessionList.Add(session);
                 return session;
             }
         }
