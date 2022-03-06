@@ -25,12 +25,15 @@ namespace DummyClient
 
             while (true) {
                 try {
-
+                    // 소속된 세션들이 모두 서버에 채팅메세지를 보내도록
+                    SessionManager.Instance.SendForEach();
                 }
                 catch (Exception e) {
                     Console.WriteLine(e.ToString());
-                    Thread.Sleep(1000);
                 }
+
+                // 1. 일반적으로 MMO에서는 이동패킷을 1초에 4번정도 보냄
+                Thread.Sleep(250);
             }
 
         }
