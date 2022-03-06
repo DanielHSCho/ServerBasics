@@ -9,7 +9,7 @@ namespace ServerCore
         void Push(Action job);
     }
 
-    class JobQueue : IJobQueue
+    public class JobQueue : IJobQueue
     {
         // 내가 해야하는 일감들을 가지고 있는 큐
         Queue<Action> _jobQueue = new Queue<Action>();

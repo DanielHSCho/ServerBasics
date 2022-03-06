@@ -1,14 +1,22 @@
-﻿using System;
+﻿using ServerCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Server
 {
-    class GameRoom
+    class GameRoom : IJobQueue
     {
         // TODO : 후에는 Dictionary로 Id랑 클라 세션을 물고 있어도 됨
         List<ClientSession> _sessions = new List<ClientSession>();
         object _lock = new object();
+
+        JobQueue _jobQueue = new JobQueue();
+
+        public void Push(Action job)
+        {
+            _jobQueue.Push(job);
+        }
 
         public void Broadcast(ClientSession session, string chat)
         {

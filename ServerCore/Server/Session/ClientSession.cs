@@ -19,7 +19,7 @@ namespace Server
             // TODO : 채팅 테스트를 위해 임시로 어떤 채팅방에 강제 입장
             // TODO : 실제 게임 개발 시에는 입장 후 이 단계에서 클라가 리소스 로딩 다 했다고 신호 보내면 그때 입장 처리해야함
 
-            Program.Room.Enter(this);
+            Program.Room.Push(() => Program.Room.Enter(this));
 
             // 끊어주는건 임시 주석
             // Thread.Sleep(5000);
@@ -36,7 +36,7 @@ namespace Server
             SessionManager.Instance.Remove(this);
 
             if(Room != null) {
-                Room.Leave(this);
+                Room.Push(() => Room.Leave(this));
                 Room = null;
             }
 
