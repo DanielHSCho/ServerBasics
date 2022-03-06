@@ -16,9 +16,10 @@ class PacketHandler
             return;
         }
 
-        clientSession.Room.Push(
+        GameRoom room = clientSession.Room;
+        room.Push(
             // TODO : ClientSession의 Room이 null일 경우 문제가 발생할 수 있음
-            () => { clientSession.Room.Broadcast(clientSession, chatPacket.chat); }
+            () => { room.Broadcast(clientSession, chatPacket.chat); }
             );
     }
 }

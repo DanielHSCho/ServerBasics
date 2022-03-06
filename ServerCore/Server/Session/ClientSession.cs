@@ -36,7 +36,8 @@ namespace Server
             SessionManager.Instance.Remove(this);
 
             if(Room != null) {
-                Room.Push(() => Room.Leave(this));
+                GameRoom room = Room;
+                room.Push(() => room.Leave(this));
                 Room = null;
             }
 
