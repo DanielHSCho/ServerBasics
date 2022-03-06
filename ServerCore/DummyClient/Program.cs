@@ -10,6 +10,8 @@ namespace DummyClient
 {
     class Program
     {
+        private static int _simulationCount = 10;
+
         static void Main(string[] args)
         {
             string host = Dns.GetHostName();
@@ -19,7 +21,7 @@ namespace DummyClient
 
             // TODO : 동작은 하지만, try catch 처리로 네트워크 실패 처리 해야함
             Connector connector = new Connector();
-            connector.Connect(endPoint, () => { return new ServerSession(); });
+            connector.Connect(endPoint, () => { return SessionManager.Instance.Generate(); }, _simulationCount);
 
             while (true) {
                 try {
