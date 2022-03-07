@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using ServerCore;
 
 
@@ -25,7 +26,9 @@ namespace Server
 
             // 프로그램이 종료되지 않게
             while (true) {
-
+                // 메인스레드도 이제 일하자
+                Room.Push(() => Room.Flush());
+                Thread.Sleep(250);
             }
         }
     }

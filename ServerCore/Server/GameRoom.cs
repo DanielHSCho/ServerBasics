@@ -11,9 +11,21 @@ namespace Server
         List<ClientSession> _sessions = new List<ClientSession>();
         JobQueue _jobQueue = new JobQueue();
 
+        List<ArraySegment<byte>> _pendingList = new List<ArraySegment<byte>>();
+
         public void Push(Action job)
         {
             _jobQueue.Push(job);
+        }
+
+        public void Flush()
+        {
+            foreach (ClientSession clientSession in _sessions) {
+                clientSession.Send(_pendingList);
+            }
+
+            Console.WriteLine($"Flushed {_pendingList.Count} Items");
+            _pendingList.Clear();
         }
 
         public void Broadcast(ClientSession session, string chat)
@@ -25,9 +37,7 @@ namespace Server
 
             ArraySegment<byte> segment = packet.Write();
 
-            foreach (ClientSession clientSession in _sessions) {
-                clientSession.Send(segment);
-            }
+            _pendingList.Add(segment);
         }
 
         public void Enter(ClientSession session)
