@@ -12,6 +12,12 @@ namespace Server
         // TODO : 이 ROOM도 나중에 매니저가 있어서 조종해야함
         public static GameRoom Room = new GameRoom();
 
+        static void FlushRoom()
+        {
+            Room.Push(() => Room.Flush());
+            JobTimer.Instance.Push(FlushRoom, 250);
+        }
+
         static void Main(string[] args)
         {
             // DNS
@@ -24,11 +30,12 @@ namespace Server
             _listner.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
             Console.WriteLine("Listening");
 
+            // FlushRoom();
+            JobTimer.Instance.Push(FlushRoom);
+
             // 프로그램이 종료되지 않게
             while (true) {
-                // 메인스레드도 이제 일하자
-                Room.Push(() => Room.Flush());
-                Thread.Sleep(250);
+                JobTimer.Instance.Flush();
             }
         }
     }
