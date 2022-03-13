@@ -1,5 +1,6 @@
 using DummyClient;
 using ServerCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -21,6 +22,8 @@ public class NetworkManager : MonoBehaviour
         // TODO : 동작은 하지만, try catch 처리로 네트워크 실패 처리 해야함
         Connector connector = new Connector();
         connector.Connect(endPoint, () => { return _session; }, _simulationCount);
+
+        StartCoroutine("CoSendPacket");
     }
 
     void Update()
@@ -30,6 +33,19 @@ public class NetworkManager : MonoBehaviour
         IPacket packet = PacketQueue.Instance.Pop();
         if(packet != null) {
             PacketManager.Instance.HandlePacket(_session, packet);
+        }
+    }
+
+    IEnumerator CoSendPacket()
+    {
+        while (true) {
+            yield return new WaitForSeconds(3.0f);
+
+            C_Chat chatPacket = new C_Chat();
+            chatPacket.chat = "Hellow From Unity";
+            ArraySegment<byte> segment = chatPacket.Write();
+
+            _session.Send(segment);
         }
     }
 }
