@@ -12,6 +12,11 @@ namespace Server
         public int SessionId { get; set; }
         public GameRoom Room { get; set; }
 
+        // TODO : 나중엔 Player 클래스에서 관리되어야 하는 정보
+        public float PosX { get; set; }
+        public float PosY { get; set; }
+        public float PosZ { get; set; }
+
         public override void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"On Connected : {endPoint}");
