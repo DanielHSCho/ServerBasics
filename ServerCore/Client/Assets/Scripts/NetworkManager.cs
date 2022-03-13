@@ -25,6 +25,8 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
+        // TODO : While이나 일정 시간을 둬서 모두 처리하는 방법이 있음
+
         IPacket packet = PacketQueue.Instance.Pop();
         if(packet != null) {
             PacketManager.Instance.HandlePacket(_session, packet);
