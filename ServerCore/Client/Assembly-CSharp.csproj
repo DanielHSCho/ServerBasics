@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Packet\ClientPacketManager.cs" />
     <Compile Include="Assets\Scripts\Packet\GenPackets.cs" />
     <Compile Include="Assets\Scripts\NetworkManager.cs" />
+    <Compile Include="Assets\Scripts\PacketQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
