@@ -6,9 +6,8 @@ using System.Text;
 
 class PacketHandler
 {
-    public static void C_ChatHandler(PacketSession session, IPacket packet)
+    public static void C_LeaveGameHandler(PacketSession session, IPacket packet)
     {
-        C_Chat chatPacket = packet as C_Chat;
         ClientSession clientSession = session as ClientSession;
         
         // 방에 있는 상태가 아님
@@ -18,8 +17,23 @@ class PacketHandler
 
         GameRoom room = clientSession.Room;
         room.Push(
-            // TODO : ClientSession의 Room이 null일 경우 문제가 발생할 수 있음
-            () => { room.Broadcast(clientSession, chatPacket.chat); }
+            () => { room.Leave(clientSession); }
+            );
+    }
+
+    public static void C_MoveHandler(PacketSession session, IPacket packet)
+    {
+        C_Move movePacket = packet as C_Move;
+        ClientSession clientSession = session as ClientSession;
+
+        // 방에 있는 상태가 아님
+        if (clientSession.Room == null) {
+            return;
+        }
+
+        GameRoom room = clientSession.Room;
+        room.Push(
+            () => { room.Move(clientSession, movePacket); }
             );
     }
 }

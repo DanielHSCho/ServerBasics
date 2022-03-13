@@ -67,7 +67,29 @@ namespace Server
 
         public void Leave(ClientSession session)
         {
+            // 플레이어 제거
             _sessions.Remove(session);
+
+            // 모두에게 알림
+            S_BroadcastLeaveGame leave = new S_BroadcastLeaveGame();
+            leave.playerId = session.SessionId;
+            Broadcast(leave.Write());
+        }
+
+        public void Move(ClientSession session, C_Move packet)
+        {
+            // 좌표 변경
+            session.PosX = packet.posX;
+            session.PosY = packet.posY;
+            session.PosZ = packet.posZ;
+
+            // 모두에게 알림
+            S_BroadcastMove move = new S_BroadcastMove();
+            move.playerId = session.SessionId;
+            move.posX = session.PosX;
+            move.posY = session.PosY;
+            move.posZ = session.PosZ;
+            Broadcast(move.Write());
         }
     }
 }
