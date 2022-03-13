@@ -28,15 +28,8 @@ namespace Server
             _pendingList.Clear();
         }
 
-        public void Broadcast(ClientSession session, string chat)
+        public void Broadcast(ArraySegment<byte> segment)
         {
-            // 채팅 메세지가 온다면 방의 모든 애들한테 메세지를 뿌리자
-            S_Chat packet = new S_Chat();
-            packet.playerId = session.SessionId;
-            packet.chat = $"{chat} I am {packet.playerId}";
-
-            ArraySegment<byte> segment = packet.Write();
-
             _pendingList.Add(segment);
         }
 
