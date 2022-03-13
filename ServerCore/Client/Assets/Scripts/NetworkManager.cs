@@ -25,6 +25,9 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
-        
+        IPacket packet = PacketQueue.Instance.Pop();
+        if(packet != null) {
+            PacketManager.Instance.HandlePacket(_session, packet);
+        }
     }
 }
