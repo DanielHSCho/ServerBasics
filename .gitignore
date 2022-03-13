@@ -9,3 +9,5 @@ ServerCore/Server/obj
 ServerCore/ServerCore/obj/Debug/netcoreapp3.1
 ServerCore/ServerCore/obj
 ServerCore/Client/Temp
+ServerCore/Client/Logs
+ServerCore/Client/Library
