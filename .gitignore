@@ -11,3 +11,6 @@ ServerCore/ServerCore/obj
 ServerCore/Client/Temp
 ServerCore/Client/Logs
 ServerCore/Client/Library
+ServerCore/Server/bin/Debug
+ServerCore/Client/.vs/Client/v16
+ServerCore/Client/obj/Debug
