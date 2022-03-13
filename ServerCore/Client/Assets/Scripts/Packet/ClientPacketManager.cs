@@ -24,7 +24,7 @@ class PacketManager
 
     }
 
-    public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
+    public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer, Action<PacketSession, IPacket> onRecvCallback = null)
     {
         ushort count = 0;
 
@@ -36,7 +36,12 @@ class PacketManager
         Func<PacketSession, ArraySegment<byte>, IPacket> func = null;
         if (_makeFunc.TryGetValue(id, out func)) {
             IPacket packet = func.Invoke(session, buffer);
-            HandlePacket(session, packet);
+
+            if(onRecvCallback != null) {
+                onRecvCallback.Invoke(session, packet);
+            } else {
+                HandlePacket(session, packet);
+            }
         }
     }
 
