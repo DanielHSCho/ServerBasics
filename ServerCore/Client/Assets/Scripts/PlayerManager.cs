@@ -18,10 +18,12 @@ public class PlayerManager
 
             if (playerPkt.isSelf) {
                 MyPlayer myPlayer = go.AddComponent<MyPlayer>();
+                myPlayer.PlayerId = playerPkt.playerId;
                 myPlayer.transform.position = new Vector3(playerPkt.posX, playerPkt.posY, playerPkt.posZ);
                 _myPlayer = myPlayer;
             } else {
                 Player player = go.AddComponent<Player>();
+                player.PlayerId = playerPkt.playerId;
                 player.transform.position = new Vector3(playerPkt.posX, playerPkt.posY, playerPkt.posZ);
                 _players.Add(playerPkt.playerId, player);
             }
@@ -46,6 +48,11 @@ public class PlayerManager
 
     public void EnterGame(S_BroadcastEnterGame packet)
     {
+        // 내 자신은 중복 처리하지 않음
+        if(packet.playerId == _myPlayer.PlayerId) {
+            return;
+        }
+
         Object obj = Resources.Load("Player");
         GameObject go = Object.Instantiate(obj) as GameObject;
 
