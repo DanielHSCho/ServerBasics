@@ -12,6 +12,11 @@ public class NetworkManager : MonoBehaviour
     // 갯수는 유니티 클라에선 1개만 
     private int _simulationCount = 1;
 
+    public void Send(ArraySegment<byte> sendBuff)
+    {
+        _session.Send(sendBuff);
+    }
+
     void Start()
     {
         string host = Dns.GetHostName();
@@ -22,8 +27,6 @@ public class NetworkManager : MonoBehaviour
         // TODO : 동작은 하지만, try catch 처리로 네트워크 실패 처리 해야함
         Connector connector = new Connector();
         connector.Connect(endPoint, () => { return _session; }, _simulationCount);
-
-        StartCoroutine("CoSendPacket");
     }
 
     void Update()
@@ -33,19 +36,6 @@ public class NetworkManager : MonoBehaviour
         IPacket packet = PacketQueue.Instance.Pop();
         if(packet != null) {
             PacketManager.Instance.HandlePacket(_session, packet);
-        }
-    }
-
-    IEnumerator CoSendPacket()
-    {
-        while (true) {
-            yield return new WaitForSeconds(3.0f);
-
-            C_Chat chatPacket = new C_Chat();
-            chatPacket.chat = "Hellow From Unity";
-            ArraySegment<byte> segment = chatPacket.Write();
-
-            _session.Send(segment);
         }
     }
 }
