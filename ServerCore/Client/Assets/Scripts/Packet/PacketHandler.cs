@@ -21,8 +21,10 @@ class PacketHandler
 
     public static void S_PlayerListHandler(PacketSession session, IPacket packet)
     {
-        S_PlayerList chatPacket = packet as S_PlayerList;
+        S_PlayerList pkt = packet as S_PlayerList;
         ServerSession serverSession = session as ServerSession;
+
+        PlayerManager.Instance.Add(pkt);
     }
 
     public static void S_BroadcastMoveHandler(PacketSession session, IPacket packet)
