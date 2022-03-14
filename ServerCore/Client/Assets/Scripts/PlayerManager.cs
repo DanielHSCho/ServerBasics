@@ -27,4 +27,44 @@ public class PlayerManager
             }
         }
     }
+
+    public void Move(S_BroadcastMove packet)
+    {
+        if(_myPlayer.PlayerId == packet.playerId) {
+            // TODO : 이동 동기화가 가장 어려운 부분 - 나중에 컨텐츠쪽에서 다루게 
+            // 1안) 허락 패킷이 오면 그 때 이동하거나
+            // 2안) 클라에서 이동먼저 하고, 서버에서 온값 기준으로 보정
+            // 이 예제에서는 1안이 왔다 가정하고 보정
+            _myPlayer.transform.position = new Vector3(packet.posX, packet.posY, packet.posZ);
+        } else {
+            Player player = null;
+            if(_players.TryGetValue(packet.playerId, out player)) {
+                player.transform.position = new Vector3(packet.posX, packet.posY, packet.posZ);
+            }
+        }
+    }
+
+    public void EnterGame(S_BroadcastEnterGame packet)
+    {
+        Object obj = Resources.Load("Player");
+        GameObject go = Object.Instantiate(obj) as GameObject;
+
+        Player player = go.AddComponent<Player>();
+        player.transform.position = new Vector3(packet.posX, packet.posY, packet.posZ);
+        _players.Add(packet.playerId, player);
+    }
+
+    public void LeaveGame(S_BroadcastLeaveGame packet)
+    {
+        if(packet.playerId == _myPlayer.PlayerId) {
+            GameObject.Destroy(_myPlayer.gameObject);
+            _myPlayer = null;
+        } else {
+            Player player = null;
+            if(_players.TryGetValue(packet.playerId, out player)) {
+                GameObject.Destroy(player.gameObject);
+                _players.Remove(packet.playerId);
+            }
+        }
+    }
 }
